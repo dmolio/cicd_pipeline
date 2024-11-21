@@ -34,6 +34,42 @@ router.get('/welcome',(req,res)=>{
      }
 });
 
+router.get('/about', (req, res) => {
+    if(req.session.user){
+        const msg1 = req.session.user;
+        res.render('about', { msg1 });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+router.get('/services', (req, res) => {
+    if(req.session.user){
+        const msg1 = req.session.user;
+        res.render('services', { msg1 });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+router.get('/portfolio', (req, res) => {
+    if(req.session.user){
+        const msg1 = req.session.user;
+        res.render('portfolio', { msg1 });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+router.get('/contact', (req, res) => {
+    if(req.session.user){
+        const msg1 = req.session.user;
+        res.render('contact', { msg1 });
+    } else {
+        res.redirect('/login');
+    }
+});
+
 router.get('/logout',(req,res)=>{
     res.clearCookie("user_sid");
     res.render('index');

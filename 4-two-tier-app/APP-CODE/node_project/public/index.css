@@ -59,3 +59,14 @@ nav li a:hover{
 button:hover{
     background-color: #0088a9cc ;
 }
+.logo p a {
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+.logo p a:hover {
+    color: #34c9ef;
+    transition: all 0.4s ease 0s;
+}

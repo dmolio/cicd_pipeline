@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+    <title>Be DevOps - About</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <p><a href="/about">Be DevOps</a></p>
+        </div>
+        <nav>
+            <ul>
+               <li><a href="/welcome">Home</a></li>
+               <li><a href="/about">About</a></li>
+               <li><a href="/services">Services</a></li>
+               <li><a href="/portfolio">Portfolio</a></li>
+               <li><a href="/contact">Contact</a></li>
+            </ul>
+        </nav>
+        <% if(msg1){ %>
+            <button><a href="/logout">Logout</a></button>
+        <% } else{ %>  
+            <button><a href="/login">Login</a></button>
+        <% } %>
+    </header>    
+    <br>
+    <br>
+    <div class="container mt-4">
+        <div class="jumbotron">
+            <h1>About Our Application</h1>
+            <p>This is a sophisticated three-tier application architecture deployed across three containers:</p>
+            <ul>
+                <li><strong>Frontend/Backend Container:</strong> Node.js application handling user interface and business logic</li>
+                <li><strong>Database Container:</strong> MySQL database for secure user data storage</li>
+                <li><strong>Administration Container:</strong> PHPMyAdmin for database management</li>
+            </ul>
+            <p>Our application demonstrates modern DevOps practices including containerization, microservices architecture, and secure user authentication.</p>
+        </div>
+    </div>
+</body>
+</html> 

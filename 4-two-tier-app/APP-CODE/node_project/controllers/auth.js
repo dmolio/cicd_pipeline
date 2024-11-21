@@ -8,11 +8,20 @@ const flash = require('connect-flash');
 //====================== Database Connection ===================================
 
 const db = mysql.createConnection ({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE,
-    port: process.env.DATABASE_PORT,
+    host: 'localhost', // Changed to localhost since MySQL is running on Docker
+    user: process.env.DATABASE_USER || 'root',
+    password: process.env.DATABASE_PASSWORD || 'P@ssw0rd',
+    database: process.env.DATABASE || 'sql_login',
+    port: process.env.DATABASE_PORT || 3306,
+});
+
+// Add connection error handling
+db.connect((err) => {
+    if (err) {
+        console.error('Error connecting to the database:', err);
+        return;
+    }
+    console.log('Connected to the database successfully');
 });
 
 //====================== START LOGIN ===================================
@@ -25,7 +34,9 @@ exports.login=(req,res)=>{
         }
         db.query("SELECT * FROM users WHERE email = ?", [email], async (error,results) =>{
             if (error) {
-                console.log(error)
+                console.error('Database query error:', error);
+                req.flash('message', 'An error occurred. Please try again later.');
+                return res.redirect('/login');
             };
             if (results.length > 0) {
                 // Save the password from Database to a Variable for useing in next steps.
@@ -54,11 +65,21 @@ exports.login=(req,res)=>{
 //====================== START REGISTER ==============================
 exports.register=(req,res)=>{
     const {firstname, lastname, email, password, passwordconfirm} = req.body;
+    
+    // First check if the database connection is active
+    if (!db || !db.state || db.state === 'disconnected') {
+        req.flash('message', 'Database connection error. Please try again later.');
+        return res.redirect('../register');
+    }
+
     db.query('SELECT email FROM users WHERE email = ?' , [email], async (error,results) => {
         if (error) {
-            console.log(error);
+            console.error('Database query error:', error);
+            req.flash('message', 'An error occurred. Please try again later.');
+            return res.redirect('../register');
         }
-        if ( results.length > 0){
+        
+        if (results && results.length > 0) {
             req.flash('message', 'This Email is Already in USE');
             return res.redirect('../register');
         }
@@ -69,7 +90,8 @@ exports.register=(req,res)=>{
         let hashedPassword = await bcrypt.hash(password, 8);
         db.query('INSERT INTO users SET ?', {email: email, password: hashedPassword, firstname: firstname, lastname: lastname}, (error, results)=> {
             if (error) {
-                console.log(error);
+                console.error('Database query error:', error);
+                req.flash('message', 'An error occurred. Please try again later.');
                 return res.redirect("/register");
             } else {
                 req.flash('message', "Your Data submited successfully!");
